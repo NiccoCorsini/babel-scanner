@@ -1,6 +1,6 @@
 {
   "name": "babel-scanner",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -35,5 +35,10 @@
     "@types/node": "^22.7.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NiccoCorsini/babel-scanner.git"
+  },
+  "homepage": "https://github.com/NiccoCorsini/babel-scanner#readme"
 }
