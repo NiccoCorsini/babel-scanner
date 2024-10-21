@@ -28,7 +28,7 @@ var readCode = function (str) {
         .map(function (cod) { return alphabetMap_1.alphabetRead.get(cod); })
         .filter(function (el) { return el !== undefined; })
         .join("");
-    return decodedName + shirt;
+    return decodedName + (shirt || "");
 };
 exports.readCode = readCode;
 /**
@@ -48,10 +48,7 @@ var writeCode = function (str) {
         .map(function (s) { return alphabetMap_1.alphabetWrite.get(s); })
         .filter(function (el) { return el !== undefined; });
     var encodedNameAndPrefix = (0, parsers_1.numToStringArray)(scannerProperties_1.RESERVATION_PREFIX.concat(encodedName)).join("");
-    return encodedNameAndPrefix + scannerProperties_1.CODE_SEPARATOR + shirt;
+    return encodedNameAndPrefix + (shirt ? scannerProperties_1.CODE_SEPARATOR + shirt : "");
 };
 exports.writeCode = writeCode;
-var encoded = (0, exports.writeCode)("PINZI66");
-var decoded = (0, exports.readCode)(encoded);
-console.log(encoded, decoded);
 //# sourceMappingURL=index.js.map
