@@ -1,6 +1,4 @@
-export declare const SCANNER_PREFIX: number[];
-export declare const RESERVATION_PREFIX: number[];
-export declare const CODE_RANGE = 2;
-export declare const STRING_RANGE = 1;
 export declare const CODE_SEPARATOR = "-";
+export declare const SCANNER_PREFIX = "BSCAN";
+export declare const RES_PREFIX: string;
 //# sourceMappingURL=scannerProperties.d.ts.map

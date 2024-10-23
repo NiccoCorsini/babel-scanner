@@ -1,1 +1,1 @@
-{"version":3,"file":"scannerProperties.d.ts","sourceRoot":"","sources":["../../src/config/scannerProperties.ts"],"names":[],"mappings":"AAAA,eAAO,MAAM,cAAc,UAAmB,CAAC;AAE/C,eAAO,MAAM,kBAAkB,UAAsC,CAAC;AAEtE,eAAO,MAAM,UAAU,IAAI,CAAC;AAE5B,eAAO,MAAM,YAAY,IAAI,CAAC;AAE9B,eAAO,MAAM,cAAc,MAAM,CAAC"}
+{"version":3,"file":"scannerProperties.d.ts","sourceRoot":"","sources":["../../src/config/scannerProperties.ts"],"names":[],"mappings":"AAAA,eAAO,MAAM,cAAc,MAAM,CAAC;AAElC,eAAO,MAAM,cAAc,UAAU,CAAC;AAEtC,eAAO,MAAM,UAAU,QAA8B,CAAC"}

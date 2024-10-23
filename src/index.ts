@@ -1,74 +1,77 @@
-import { alphabetRead, alphabetWrite } from "./config/alphabetMap";
 import {
-  CODE_RANGE,
   CODE_SEPARATOR,
-  RESERVATION_PREFIX,
-  STRING_RANGE,
+  RES_PREFIX,
+  SCANNER_PREFIX,
 } from "./config/scannerProperties";
-import { AlphabetCodes, AlphabetLecters } from "./definitions/alphabet";
-import { numToStringArray, stringToNumArray } from "./helpers/parsers";
+import { Prefixes, ReadCodeOutput } from "./definitions/prefixes";
 import { inputSanitizer } from "./helpers/sanitizer";
 import {
-  checkAndExtractPrefix,
-  splitNameAndShirtFromCode,
-  splitNameAndShirtFromName,
-  splitStringAtInterval,
-} from "./helpers/splitters";
+  checkPrefix,
+  checkResPrefix,
+  extractPrefix,
+} from "./helpers/prefixCheckers";
+import { decoder, encoder } from "./helpers/textCoders";
 
 /**
- * Decodes an encoded string into a readable name and a numeric part.
+ * Decodes a string encoded with a specific scanner format and verifies its prefix.
  *
- * @param {string} str - The encoded string to be decoded. The string is expected to contain a name and a numeric code at the end.
- * @returns {string} - The decoded name combined with the numeric part of the string.
- * @throws {Error} - Throws an error if the string does not start with the expected prefix or if the code is not readable.
+ * This function sanitizes the input string, splits it using a defined separator,
+ * and decodes it from a Uint8Array format. It checks whether the decoded string
+ * contains the expected scanner prefix. If the prefix is invalid, an error is thrown.
  *
- * @example
- * const decoded = readCode("501511404819504427406427-66");
- * // returns "PINZI66"
+ * @param {string} str - The encoded input string to decode.
+ * @returns {ReadCodeOutput} The decoded string and a boolean flag indicating if it has a 'res' prefix.
+ * @throws {Error} If the input string does not contain the required scanner prefix.
  */
-export const readCode = (str: string): string => {
-  const { name, shirt } = splitNameAndShirtFromCode(inputSanitizer(str));
+export const readCode = (str: string): ReadCodeOutput => {
+  const preworkedStr = inputSanitizer(str)
+    .split(CODE_SEPARATOR)
+    .map((s) => Number(s));
 
-  const encodedNameAndPrefix = stringToNumArray(
-    splitStringAtInterval(name, CODE_RANGE)
-  );
+  const tmpStr = decoder.decode(new Uint8Array(preworkedStr));
 
-  const encodedName = checkAndExtractPrefix(encodedNameAndPrefix);
-
-  if (!encodedName) {
-    throw new Error("Not readable code!");
+  if (!checkPrefix(tmpStr)) {
+    throw new Error("This input wasn't encoded with babel-scanner");
   }
 
-  const decodedName = encodedName
-    .map((cod) => alphabetRead.get(cod as AlphabetCodes))
-    .filter((el) => el !== undefined)
-    .join("");
+  const isRes = checkResPrefix(tmpStr);
 
-  return decodedName + (shirt || "");
+  const decodedStr = extractPrefix(tmpStr, isRes);
+
+  return {
+    decodedStr,
+    isRes,
+  };
 };
 
 /**
- * Encodes a name and numeric part into an encoded string using a specific prefix and an encoding map.
+ * Encodes a string with a specific scanner prefix and optional reserved prefix if you need custom logic during decoding process.
  *
- * @param {string} str - The string containing a name and numeric part that need to be encoded.
- * @returns {string} - The encoded string, consisting of an encoded prefix and the numeric part, separated by a specific delimiter.
+ * This function prepares a string by sanitizing the input and adding a prefix.
+ * It encodes the string into a Uint8Array and formats the encoded data with a
+ * separator. Optionally, a custom prefix can be provided, altering the encoding.
  *
- * @example
- * const encoded = writeCode("PINZI66");
- * // returns "501511404819504427406427-66"
+ * @param {string} str - The input string to encode.
+ * @param {Partial<Prefixes>} [prefix] - Optional prefix object, which defines if the string should be encoded with a reserved prefix.
+ * @param {boolean} [prefix.isRes] - If true, adds a reserved prefix before encoding the string.
+ * @returns {string} The encoded string with numbers separated by the defined separator.
  */
-export const writeCode = (str: string): string => {
-  const { name, shirt } = splitNameAndShirtFromName(inputSanitizer(str));
+export const writeCode = (str: string, prefix?: Partial<Prefixes>): string => {
+  let strToEncode = SCANNER_PREFIX + inputSanitizer(str);
 
-  const preparedName = splitStringAtInterval(name, STRING_RANGE);
+  if (prefix && prefix.isRes) {
+    strToEncode = RES_PREFIX + inputSanitizer(str);
+  }
 
-  const encodedName = preparedName
-    .map((s) => alphabetWrite.get(s as AlphabetLecters))
-    .filter((el) => el !== undefined);
+  //Default encoding to Uint8Array
+  const encodedString = encoder.encode(strToEncode);
 
-  const encodedNameAndPrefix = numToStringArray(
-    RESERVATION_PREFIX.concat(encodedName)
-  ).join("");
+  let finalStr = "";
 
-  return encodedNameAndPrefix + (shirt ? CODE_SEPARATOR + shirt : "");
+  encodedString.forEach(
+    (n, i) =>
+      (finalStr += i === encodedString.length - 1 ? n : n + CODE_SEPARATOR)
+  );
+
+  return finalStr;
 };
