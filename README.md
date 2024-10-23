@@ -1,6 +1,27 @@
+<div align="center">
+
 # Babel Scanner
 
 **Babel Scanner** is a lightweight yet powerful library designed to encode strings into a numeric format using the `TextEncoder` and `TextDecoder` APIs and decode the generated codes back into their original strings. This library ensures compatibility across different keyboard layouts, such as AZERTY, QWERTY, and QWERTZ, when handling barcode scans, providing a consistent encoding and decoding mechanism.
+
+[![Latest Stable Version](https://img.shields.io/npm/v/babel-scanner.svg)](https://www.npmjs.com/package/babel-scanner)
+[![NPM Downloads](https://img.shields.io/npm/dm/babel-scanner.svg)](https://www.npmjs.com/package/babel-scanner)
+[![NPM Downloads](https://img.shields.io/npm/dt/babel-scanner.svg)](https://www.npmjs.com/package/babel-scanner)
+[![Bundlephobia Size](https://img.shields.io/bundlephobia/minzip/babel-scanner.svg)](https://www.npmjs.com/package/babel-scanner)
+[![License](https://img.shields.io/npm/l/babel-scanner.svg?style=flat)](https://github.com/NiccoCorsini/babel-scanner?tab=License-1-ov-file)
+
+_Found it useful? Want more updates?_
+
+[**Show your support by giving a :star:**](https://github.com/NiccoCorsini/babel-scanner/stargazers)
+
+<a href="https://buymeacoffee.com/niccocorsini">
+  <img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me a Coffee">
+</a>
+
+<br/>
+<hr/>
+
+</div>
 
 ### Problem Solved
 
